@@ -1,36 +1,26 @@
-import axios from 'axios';
-import { useState } from 'react';
+import axios from "axios";
 
-interface User {
-  username: string;
-  email: string;
+async function getUserDetails() {
+  const response = await axios.get("http://localhost:3000/api/user")
+  await new Promise (r => setTimeout(r, 2000)) 
+  console.log("response is" + JSON.stringify(response.data))
+	return response.data;
 }
 
-export const GetUserDetails = () => {
-  const [userDetails, setDetails] = useState<User | null>(null);
-
-  // Call the function directly to fetch data without useEffect (e.g., for testing purposes)
-  const fetchData = async () => {
-    try {
-      const response = await axios.get('https://week-13-offline.kirattechnologies.workers.dev/api/v1/user/details');
-      setDetails(response.data);
-    } catch (error) {
-      console.error('Error fetching user details:', error);
-    }
-  };
-
-  fetchData(); // This will run the function and fetch the data
+export default async function Home() {
+  const userData = await getUserDetails();
 
   return (
-    <>
-      {userDetails ? (
-        <>
-          <p>Username: {userDetails.username}</p>
-          <p>Email: {userDetails.email}</p>
-        </>
-      ) : (
-        <p>Loading...</p>
-      )}
-    </>
+    <div className="flex flex-col justify-center h-screen">
+        <div className="flex justify-center">
+            <div className="border p-8 rounded">
+                <div>
+                    Name: {userData?.name}
+                </div>
+                
+                {userData?.password}
+            </div>
+        </div>
+    </div>
   );
-};
+}

@@ -1,8 +1,9 @@
+import { Signup } from "@/component/Signup";
 
 export default function signup(){
     return (
         <div>
-            Sign Up   
+            <Signup/> 
         </div>
     )
 }
